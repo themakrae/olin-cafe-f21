@@ -88,7 +88,7 @@ If you are taking this as a class I will provide either a link where you can dow
 ```bash
 sudo apt-get update
 sudo apt-get upgrade
-sudo apt-get install build-essential nano python3 libusb
+sudo apt-get install build-essential nano python3 libusb-1.0-0
 sudo apt-get install iverilog gtkwave verilator
 sudo adduser $USER dialout
 ```
