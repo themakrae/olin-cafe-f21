@@ -19,8 +19,12 @@ Based on the [Luckylight](https://cdn-shop.adafruit.com/datasheets/454datasheet.
 display modules, available from [adafruit](https://www.adafruit.com/product/454)
 
 */
-
-module main(clk, buttons, leds, rgb, cols, rows);
+`define DISABLE_CONWAY // comment this out after you've implemented your conway_cell module.
+module main(clk, buttons, leds, rgb
+`ifndef DISABLE_CONWAY
+ , cols, rows
+`endif
+);
   //Module I/O and parameters
   parameter game_divider = 22; // A clock divider parameter - 12 MHz / 2^23 is about 1 Hz (human visible speed).
   parameter display_divider = 14; // Need to PWM the LEDs faster than the game clock!
@@ -35,8 +39,15 @@ module main(clk, buttons, leds, rgb, cols, rows);
   wire rst; assign rst = buttons[0]; // Use button 0 as a reset signal.
   output logic [1:0] leds;
   output logic [2:0] rgb;
+`ifndef DISABLE_CONWAY
   output wire [N-1:0] cols;
   output wire [N-1:0] rows;
+`else 
+  wire [N-1:0] cols;
+  wire [N-1:0] rows;
+  assign cols = 0;
+  assign rows = 0;
+`endif
 
   logic [game_divider:0] game_counter;
   logic [display_divider:0] display_counter;
@@ -228,7 +239,8 @@ module main(clk, buttons, leds, rgb, cols, rows);
     // its x and y coordinate, accounting for a border of zero'd out cells.
     cell_index = M*j + i;
   endfunction
-  
+
+`ifndef DISABLE_CONWAY
   
   generate
     genvar i;
@@ -267,7 +279,7 @@ module main(clk, buttons, leds, rgb, cols, rows);
       end
     end
   endgenerate
-
+`endif // DISABLE_CONWAY
   // Here's some clock divider logic to make this run slow enough for humans
   // to see. The default parameters dived by 2^20 (powers of two are easier)
   // which for our input 12MHz clock results in about a 11 Hz update rate.
