@@ -89,8 +89,19 @@ If you are taking this as a class I will provide either a link where you can dow
 sudo apt-get update
 sudo apt-get upgrade
 sudo apt-get install build-essential nano python3 libusb-1.0-0
-sudo apt-get install iverilog gtkwave verilator
+sudo apt-get install gtkwave verilator
 sudo adduser $USER dialout
+
+# install icarus verilog from source - thanks to Manu for the help!
+sudo apt-get remove iverilog
+cd /path/to/workspace
+git clone https://github.com/steveicarus/iverilog.git
+cd iverilog
+git checkout --track -b v11-branch origin/v11-branch
+sh autoconf.sh
+./configure
+make
+sudo make install
 ```
 
 Digilent:
