@@ -10,7 +10,7 @@ output logic c_out;
 
 wire [N:0] carries;
 always_comb c_out = carries[N];
-always_comb carries[0] = c_in;
+assign  carries[0] = c_in;
 generate
   genvar i;
   for(i = 0; i < N; i++) begin : ripple_carry
