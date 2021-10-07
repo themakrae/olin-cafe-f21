@@ -24,7 +24,6 @@ that we'll explore in further testbenches.
                  using higher level programming constructs that don't translate*
                  to real hardware.
 *Okay, many of them do, but we're trying to learn here, right?
-
 */
 
 
