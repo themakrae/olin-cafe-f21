@@ -1,3 +1,4 @@
+`timescale 1ns/1ps
 module mux4(in0,in1,in2,in3,switch,out);
 
 //parameter definitions

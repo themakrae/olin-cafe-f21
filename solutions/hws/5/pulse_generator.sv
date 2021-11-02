@@ -12,26 +12,28 @@ output logic out;
 logic [N-1:0] counter;
 logic counter_comparator;
 
-logic tick_rst;
-always_comb tick_rst = rst | counter_comparator;
+// SOLUTION START
+always_comb begin : comparator_logic
+  counter_comparator = (counter >= ticks);
+end
 
 always_ff @(posedge clk) begin : counter_logic
-  if(tick_rst) begin
+  if(rst) begin
     counter <= 0;
-  end else if (ena) begin
-    // an equivalent: counter <= counter_comparator ? counter <= 0; counter <= counter + 1;
-
-    if(counter_comparator) begin
+  end
+  else if (ena) begin
+    if (counter_comparator) begin
       counter <= 0;
-    end
-    else begin
+    end else begin
       counter <= counter + 1;
     end
   end
 end
 
-always_comb counter_comparator = counter >= (ticks -1);
+always_comb begin : output_logic
+  out = counter_comparator & ena;
+end 
 
-always_comb out = counter_comparator & ena;
+// SOLUTION END
 
 endmodule
