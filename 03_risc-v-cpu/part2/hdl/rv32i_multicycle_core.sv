@@ -270,6 +270,7 @@ always_comb begin : MULTICYCLE_FSM_COMB_OUTPUTS
       mem_src = MEM_SRC_PC;
       result_src = RESULT_SRC_ALU;
       alu_control = ALU_INVALID;
+      // could get started on setting alu control here, but why be too crazy about it.
     end
     S_EXECUTE_R: begin
       mem_wr_ena = 0;
@@ -294,8 +295,21 @@ always_comb begin : MULTICYCLE_FSM_COMB_OUTPUTS
       ALU_ena = 1;
       mem_data_ena = 0;
       mem_src = MEM_SRC_PC;
-      result_src = RESULT_SRC_ALU;
-      alu_control = ALU_ADD; // Use my funct values to set the operation
+      result_src = RESULT_SRC_ALU; 
+      case(funct3)
+        FUNCT3_ADDI : alu_control = ALU_ADD;
+        FUNCT3_SLLI : alu_control = ALU_SLL;
+        FUNCT3_SLTI : alu_control = ALU_SLT;
+        FUNCT3_SLTIU : alu_control = ALU_SLTU;
+        FUNCT3_XORI : alu_control = ALU_XOR;
+        FUNCT3_ORI : alu_control = ALU_OR;
+        FUNCT3_ANDI : alu_control = ALU_AND;
+        FUNCT3_SHIFT_RIGHT : begin
+          if(funct7[5]) alu_control = ALU_SRA;
+          else alu_control = ALU_SRL;
+        end
+        default: alu_control = ALU_INVALID;
+      endcase
     end
     S_ALU_WRITEBACK: begin
       mem_wr_ena = 0;
