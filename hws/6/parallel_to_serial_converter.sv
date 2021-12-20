@@ -40,7 +40,8 @@ always_ff @(posedge clk) begin
           q[0] <= 0;
         end
         LSB_FIRST: begin
-          // Your code goes here!
+          q[0:N-2] <= q[1:N-1];
+          q[N-1] <= 0;
         end
         default: q <= q;
       endcase
@@ -51,10 +52,10 @@ end
 always_comb begin
   case(direction)
     MSB_FIRST: begin
-      out = q[N-1];
+      out = q[N-1]
     end
     LSB_FIRST: begin
-      // Your code goes here!
+      out = q[0]
     end
   endcase
 end
